@@ -1,0 +1,21 @@
+{
+  "name": "kiro-cybxai",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Kiro proxy backend (Go) + CybxAI dashboard frontend (Next.js)",
+  "scripts": {
+    "dev": "concurrently --names \"BACKEND,DASHBOARD\" --prefix-colors \"cyan.bold,magenta.bold\" --kill-others-on-fail \"npm:dev:backend\" \"npm:dev:dashboard\"",
+    "dev:backend": "cd Backend && go run .",
+    "dev:dashboard": "cd Dashboard && npx --no-install next dev -p 8084",
+    "build": "concurrently --names \"BACKEND,DASHBOARD\" --prefix-colors \"cyan.bold,magenta.bold\" \"npm:build:backend\" \"npm:build:dashboard\"",
+    "build:backend": "cd Backend && go build -o kiro-go.exe .",
+    "build:dashboard": "cd Dashboard && npx --no-install next build",
+    "start": "concurrently --names \"BACKEND,DASHBOARD\" --prefix-colors \"cyan.bold,magenta.bold\" --kill-others-on-fail \"npm:start:backend\" \"npm:start:dashboard\"",
+    "start:backend": "cd Backend && ./kiro-go.exe",
+    "start:dashboard": "cd Dashboard && npx --no-install next start -p 8084",
+    "install:all": "cd Dashboard && bun install"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}

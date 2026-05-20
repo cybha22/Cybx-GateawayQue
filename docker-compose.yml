@@ -1,0 +1,30 @@
+services:
+  kiro-cybxai:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: kiro-cybxai:latest
+    container_name: kiro-cybxai
+    restart: unless-stopped
+    ports:
+      - "${BACKEND_PORT:-8085}:8085"
+      - "${DASHBOARD_PORT:-8084}:8084"
+    environment:
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-changeme}
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://127.0.0.1:8085}
+    volumes:
+      - kiro-data:/app/backend/data
+    healthcheck:
+      test:
+        - CMD
+        - wget
+        - --quiet
+        - --spider
+        - http://127.0.0.1:8085/api/system
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+volumes:
+  kiro-data:

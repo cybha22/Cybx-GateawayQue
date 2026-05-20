@@ -1,0 +1,773 @@
+{
+  "enabled": true,
+  "providerOverrides": {
+    "kiro": true
+  },
+  "rules": [
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "086dbb26",
+      "label": "remove any URL containing anthropic/claude",
+      "pattern": "https?:\\/\\/[^\\s\"')\u003e]*(anthropic|claude)[^\\s\"')\u003e]*",
+      "preset": true,
+      "replacement": ""
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "c642cc49",
+      "label": "remove email addresses with anthropic/claude",
+      "pattern": "[a-zA-Z0-9._%+-]*@[a-zA-Z0-9.-]*(anthropic|claude)[a-zA-Z0-9.-]*",
+      "preset": true,
+      "replacement": ""
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "9efe7c7a",
+      "label": "remove docs.anthropic.com",
+      "pattern": "docs\\.anthropic\\.com[^\\s\"')\u003e]*",
+      "preset": true,
+      "replacement": ""
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "0420934f",
+      "label": "remove console.anthropic.com",
+      "pattern": "console\\.anthropic\\.com[^\\s\"')\u003e]*",
+      "preset": true,
+      "replacement": ""
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "7e163de3",
+      "label": "remove anthropic.com",
+      "pattern": "anthropic\\.com[^\\s\"')\u003e]*",
+      "preset": true,
+      "replacement": ""
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "47a784d4",
+      "label": "remove claude.ai",
+      "pattern": "claude\\.ai[^\\s\"')\u003e]*",
+      "preset": true,
+      "replacement": ""
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "e1836e3e",
+      "label": "Claude Agent SDK → AI Agent SDK",
+      "pattern": "Claude\\s+Agent\\s+SDK",
+      "preset": true,
+      "replacement": "AI Agent SDK"
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "f77835ff",
+      "label": "Claude Code → AI Assistant",
+      "pattern": "Claude\\s+Code",
+      "preset": true,
+      "replacement": "AI Assistant"
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "8a06db84",
+      "label": "Claude Opus → Opus",
+      "pattern": "Claude\\s+Opus",
+      "preset": true,
+      "replacement": "Opus"
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "b8629b88",
+      "label": "Claude Sonnet → Sonnet",
+      "pattern": "Claude\\s+Sonnet",
+      "preset": true,
+      "replacement": "Sonnet"
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "4b2b0e76",
+      "label": "Claude Haiku → Haiku",
+      "pattern": "Claude\\s+Haiku",
+      "preset": true,
+      "replacement": "Haiku"
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "26b67e58",
+      "label": "Claude model version refs (Claude 3.x, Claude 4.x) → model",
+      "pattern": "\\bClaude[^\\S\\n]+\\d[\\w.-]*",
+      "preset": true,
+      "replacement": "model"
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "6595644d",
+      "label": "Anthropic SDK → AI SDK",
+      "pattern": "Anthropic\\s+SDK",
+      "preset": true,
+      "replacement": "AI SDK"
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "0fe3081b",
+      "label": "Anthropic Assistant → AI",
+      "pattern": "Anthropic\\s+Assistant",
+      "preset": true,
+      "replacement": "AI"
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "caed3b8a",
+      "label": "Anthropic API → AI API",
+      "pattern": "Anthropic\\s+API",
+      "preset": true,
+      "replacement": "AI API"
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "4974b581",
+      "label": "Anthropic's → AI Provider's",
+      "pattern": "Anthropic's",
+      "preset": true,
+      "replacement": "AI Provider's"
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "a27c76ad",
+      "label": "by Anthropic → by AI Provider",
+      "pattern": "by\\s+Anthropic",
+      "preset": true,
+      "replacement": "by AI Provider"
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "7778f728",
+      "label": "from Anthropic → from AI Provider",
+      "pattern": "from\\s+Anthropic",
+      "preset": true,
+      "replacement": "from AI Provider"
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "4ceda857",
+      "label": "built on Anthropic → built on AI Provider",
+      "pattern": "built\\s+on\\s+Anthropic",
+      "preset": true,
+      "replacement": "built on AI Provider"
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "7b6c779c",
+      "label": "Claude CLI → assistant CLI",
+      "pattern": "Claude\\s+CLI",
+      "preset": true,
+      "replacement": "assistant CLI"
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "4a40beec",
+      "label": "Claude session → assistant session",
+      "pattern": "Claude\\s+session",
+      "preset": true,
+      "replacement": "assistant session"
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "a3b73bb9",
+      "label": "Claude exits → assistant exits",
+      "pattern": "Claude\\s+exits",
+      "preset": true,
+      "replacement": "assistant exits"
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "67627b89",
+      "label": "Claude models → AI models",
+      "pattern": "Claude\\s+models",
+      "preset": true,
+      "replacement": "AI models"
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "c30670e2",
+      "label": "Claude model family → AI model family",
+      "pattern": "Claude\\s+model\\s+family",
+      "preset": true,
+      "replacement": "AI model family"
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "b50fd2c4",
+      "label": "Anthropic prompt cache → prompt cache",
+      "pattern": "Anthropic\\s+prompt\\s+cache",
+      "preset": true,
+      "replacement": "prompt cache"
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "g",
+      "id": "b9d4797b",
+      "label": "CLAUDE.md → AGENT.md",
+      "pattern": "CLAUDE\\.md",
+      "preset": true,
+      "replacement": "AGENT.md",
+      "skipInPath": true
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "g",
+      "id": "36897701",
+      "label": ".claude/ path → .agent/ path",
+      "pattern": "\\.claude\\/",
+      "preset": true,
+      "replacement": ".agent/"
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "g",
+      "id": "06fb113e",
+      "label": ".claude.json → .agent.json",
+      "pattern": "\\.claude\\.json",
+      "preset": true,
+      "replacement": ".agent.json"
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "09b59d5d",
+      "label": "claude-opus → opus",
+      "pattern": "claude-opus",
+      "preset": true,
+      "replacement": "opus"
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "fc895404",
+      "label": "claude-sonnet → sonnet",
+      "pattern": "claude-sonnet",
+      "preset": true,
+      "replacement": "sonnet"
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "a2194747",
+      "label": "claude-haiku → haiku",
+      "pattern": "claude-haiku",
+      "preset": true,
+      "replacement": "haiku"
+    },
+    {
+      "category": "security",
+      "enabled": false,
+      "flags": "gi",
+      "id": "6aeaa7aa",
+      "label": "claude-code → ai-assistant",
+      "pattern": "claude-code",
+      "preset": true,
+      "replacement": "ai-assistant"
+    },
+    {
+      "category": "security",
+      "enabled": false,
+      "flags": "gi",
+      "id": "6d114e8f",
+      "label": "claude-cli → assistant-cli",
+      "pattern": "claude-cli",
+      "preset": true,
+      "replacement": "assistant-cli"
+    },
+    {
+      "category": "security",
+      "enabled": false,
+      "flags": "gi",
+      "id": "b8890065",
+      "label": "claude-api → ai-api",
+      "pattern": "claude-api",
+      "preset": true,
+      "replacement": "ai-api"
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "g",
+      "id": "24ebd1d8",
+      "label": "@anthropic-ai/ → @ai-sdk/",
+      "pattern": "@anthropic-ai\\/",
+      "preset": true,
+      "replacement": "@ai-sdk/"
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "daf08b0f",
+      "label": "anthropic-version → api-version",
+      "pattern": "anthropic-version",
+      "preset": true,
+      "replacement": "api-version"
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "g",
+      "id": "3a9cd2e6",
+      "label": "Anthropic → AI Provider",
+      "pattern": "\\bAnthropic\\b",
+      "preset": true,
+      "replacement": "AI Provider"
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "d7b09239",
+      "label": "anthropic → AI Provider (case-insensitive)",
+      "pattern": "\\banthropic\\b",
+      "preset": true,
+      "replacement": "AI Provider",
+      "skipInPath": true
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "g",
+      "id": "e96ea863",
+      "label": "Claude → assistant (standalone word)",
+      "pattern": "\\bClaude\\b",
+      "preset": true,
+      "replacement": "assistant",
+      "skipInPath": true
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "95557d89",
+      "label": "claude → assistant (standalone word, case-insensitive)",
+      "pattern": "\\bclaude\\b",
+      "preset": true,
+      "replacement": "assistant",
+      "skipInPath": true
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "g",
+      "id": "b73f9d32",
+      "label": "CLAUDE → AGENT (all-caps standalone)",
+      "pattern": "\\bCLAUDE\\b",
+      "preset": true,
+      "replacement": "AGENT"
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "671d21e5",
+      "label": "OpenClaude → Assistant",
+      "pattern": "\\bOpenClaude\\b",
+      "preset": true,
+      "replacement": "Assistant"
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "bd910559",
+      "label": "OhMyOpenCode brand strip",
+      "pattern": " from OhMyOpenCode",
+      "preset": true,
+      "replacement": ""
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "8e73c5cf",
+      "label": "OhMyOpenCode parenthetical strip",
+      "pattern": "\\s*-\\s*OhMyOpenCode\\)",
+      "preset": true,
+      "replacement": ")"
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "7478fec4",
+      "label": "content filter → validation",
+      "pattern": "content.filter",
+      "preset": true,
+      "replacement": "validation"
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "6853dceb",
+      "label": "brand name transform → text transform",
+      "pattern": "brand.name.(?:transform|substitut|replac|strip)",
+      "preset": true,
+      "replacement": "text transform"
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "c27a6c81",
+      "label": "strip attribution → process data",
+      "pattern": "strip.(?:attribution|brand|billing)",
+      "preset": true,
+      "replacement": "process data"
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "43799bb4",
+      "label": "bypass → handle",
+      "pattern": "\\bbypass\\b",
+      "preset": true,
+      "replacement": "handle"
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "164b242e",
+      "label": "sanitiz* → process",
+      "pattern": "\\bsanitiz\\w*",
+      "preset": true,
+      "replacement": "process"
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "5ca836b1",
+      "label": "Advanced AI Agent → AI Assistant",
+      "pattern": "Advanced AI Agent",
+      "preset": true,
+      "replacement": "AI Assistant"
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "df62b4fb",
+      "label": "Advanced AI orchestrator → AI orchestrator",
+      "pattern": "Advanced AI orchestrator",
+      "preset": true,
+      "replacement": "AI orchestrator"
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "432423e8",
+      "label": "Advanced AI Agent with coding skills → AI coding assistant",
+      "pattern": "Advanced AI Agent with coding skills",
+      "preset": true,
+      "replacement": "AI coding assistant"
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "d94db3b0",
+      "label": "Sisyphus-Junior task executor → task executor",
+      "pattern": "Sisyphus-Junior\\s*-?\\s*a focused task executor",
+      "preset": true,
+      "replacement": "task executor"
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "09e571da",
+      "label": "(Oracle) → (Assistant)",
+      "pattern": "\\(Oracle\\)",
+      "preset": true,
+      "replacement": "(Assistant)"
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "80fbb697",
+      "label": "(Atlas) → (Assistant)",
+      "pattern": "\\(Atlas\\)",
+      "preset": true,
+      "replacement": "(Assistant)"
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "d9efbebc",
+      "label": "Anthropic's → AI Provider's",
+      "pattern": "Anthropic's",
+      "preset": true,
+      "replacement": "AI Provider's"
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "42df4b3d",
+      "label": "anthropic.com → provider.com",
+      "pattern": "anthropic\\.com",
+      "preset": true,
+      "replacement": "provider.com"
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "ad4b1535",
+      "label": "@anthropic-ai → @ai-sdk",
+      "pattern": "@anthropic-ai",
+      "preset": true,
+      "replacement": "@ai-sdk"
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "3a8e9816",
+      "label": "anthropic → ai-provider",
+      "pattern": "\\banthropic\\b",
+      "preset": true,
+      "replacement": "ai-provider",
+      "skipInPath": true
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "a1b2c3d1",
+      "label": "remove identity instruction: You are AI Assistant",
+      "pattern": "You are (?:Claude Code|AI Assistant),?\\s*(?:Anthropic'?s?|AI Provider'?s?) official CLI for (?:Claude|assistant)\\.?",
+      "preset": true,
+      "replacement": ""
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "a1b2c3d2",
+      "label": "remove powered-by model reference",
+      "pattern": "You are powered by the model named[^.]*\\.?",
+      "preset": true,
+      "replacement": ""
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "a1b2c3d3",
+      "label": "remove exact model ID reference",
+      "pattern": "The exact model ID is[^\\n]*",
+      "preset": true,
+      "replacement": ""
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "a1b2c3d4",
+      "label": "remove AI model family reference",
+      "pattern": "The most recent AI model family is[^\\n]*",
+      "preset": true,
+      "replacement": ""
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "a1b2c3d5",
+      "label": "remove billing header line",
+      "pattern": "x-(?:anthropic|ai(?:\\s|-)?provider)-billing-header:[^\\n]*",
+      "preset": true,
+      "replacement": ""
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "a1b2c3d6",
+      "label": "remove AI Assistant CLI availability",
+      "pattern": "AI Assistant is available as a CLI[^.]*\\.?",
+      "preset": true,
+      "replacement": ""
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "a1b2c3d7",
+      "label": "remove knowledge cutoff reference",
+      "pattern": "Assistant knowledge cutoff is January \\d{4}\\.",
+      "preset": true,
+      "replacement": ""
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "a1b2c3d8",
+      "label": "remove fast mode instruction",
+      "pattern": "Fast mode for AI Assistant uses[^.]*\\.?",
+      "preset": true,
+      "replacement": ""
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "a1b2c3d9",
+      "label": "remove noreply@anthropic Co-Authored-By",
+      "pattern": "Co-Authored-By:[^\\n]*noreply@[^\\n]*",
+      "preset": true,
+      "replacement": ""
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "g",
+      "id": "a1b2c3da",
+      "label": "remove memory system path",
+      "pattern": "C:\\\\\\\\Users\\\\\\\\[^\\\\]+\\\\\\\\\\.assistant\\\\\\\\[^\"\\n]*",
+      "preset": true,
+      "replacement": ""
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "a1b2c3db",
+      "label": "remove auto memory instruction block",
+      "pattern": "# auto memory[\\s\\S]*?## How to save memories[\\s\\S]*?Do not write duplicate memories\\.[^\\n]*",
+      "preset": true,
+      "replacement": ""
+    },
+    {
+      "category": "security",
+      "enabled": false,
+      "flags": "gi",
+      "id": "a1b2c3dc",
+      "label": "remove MEMORY.md references",
+      "pattern": "MEMORY\\.md[^.\\n]*\\.?",
+      "preset": true,
+      "replacement": ""
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "a1b2c3dd",
+      "label": "remove claude-code-guide agent type",
+      "pattern": "claude-code-guide:[^\\n]*",
+      "preset": true,
+      "replacement": ""
+    },
+    {
+      "category": "security",
+      "enabled": false,
+      "flags": "gi",
+      "id": "a1b2c3de",
+      "label": "remove no-gpg-sign instruction",
+      "pattern": "Never skip hooks \\(--no-verify\\)[^.]*\\.?",
+      "preset": true,
+      "replacement": ""
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "a1b2c3df",
+      "label": "remove /help feedback instruction",
+      "pattern": "/help: Get help with using AI Assistant",
+      "preset": true,
+      "replacement": ""
+    },
+    {
+      "category": "security",
+      "enabled": true,
+      "flags": "gi",
+      "id": "a1b2c3e0",
+      "label": "remove assistant prompt injection warning echo",
+      "pattern": "Pak,\\s*(?:\\*\\*)?(?:PERINGATAN\\s+)?(?:saya\\s+)?(?:men(?:dteksi|deteksi)|menemukan)?[\\s\\S]*?prompt injection[\\s\\S]*?(?:Saya\\s*(?:\\*\\*)?(?:abaikan|tolak total)|Tetap\\s+Kiro|tetap\\s+sebagai\\s+Kiro|aturan\\s+global\\s+Pak)[^\\n]*(?:\\n\\s*\\n)?",
+      "preset": true,
+      "replacement": ""
+    },
+    {
+      "category": "custom",
+      "enabled": true,
+      "flags": "i",
+      "id": "8e52e85f",
+      "label": "smoke",
+      "pattern": "foo",
+      "preset": false,
+      "replacement": "bar"
+    }
+  ]
+}
