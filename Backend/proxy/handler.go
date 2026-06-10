@@ -1177,6 +1177,7 @@ func (h *Handler) handleClaudeStream(w http.ResponseWriter, account *config.Acco
 
 	h.recordSuccess(inputTokens, outputTokens, credits)
 	h.pool.RecordSuccess(account.ID)
+	h.clearAccountAuthBanOnSuccess(account)
 	recordUsageWithCtx(account, normalizeKiroModel(model), inputTokens, outputTokens, credits, true, 200)
 	h.pool.UpdateStats(account.ID, inputTokens+outputTokens, credits)
 	h.promptCache.Update(account.ID, cacheProfile)
@@ -1437,6 +1438,7 @@ func (h *Handler) handleClaudeNonStream(w http.ResponseWriter, account *config.A
 
 	h.recordSuccess(inputTokens, outputTokens, credits)
 	h.pool.RecordSuccess(account.ID)
+	h.clearAccountAuthBanOnSuccess(account)
 	recordUsageWithCtx(account, normalizeKiroModel(model), inputTokens, outputTokens, credits, true, 200)
 	h.pool.UpdateStats(account.ID, inputTokens+outputTokens, credits)
 	h.promptCache.Update(account.ID, cacheProfile)
@@ -1878,6 +1880,7 @@ func (h *Handler) handleOpenAIStream(w http.ResponseWriter, account *config.Acco
 
 	h.recordSuccess(inputTokens, outputTokens, credits)
 	h.pool.RecordSuccess(account.ID)
+	h.clearAccountAuthBanOnSuccess(account)
 	recordUsageWithCtx(account, normalizeKiroModel(model), inputTokens, outputTokens, credits, true, 200)
 	h.pool.UpdateStats(account.ID, inputTokens+outputTokens, credits)
 
@@ -1959,6 +1962,7 @@ func (h *Handler) handleOpenAINonStream(w http.ResponseWriter, account *config.A
 
 	h.recordSuccess(inputTokens, outputTokens, credits)
 	h.pool.RecordSuccess(account.ID)
+	h.clearAccountAuthBanOnSuccess(account)
 	recordUsageWithCtx(account, normalizeKiroModel(model), inputTokens, outputTokens, credits, true, 200)
 	h.pool.UpdateStats(account.ID, inputTokens+outputTokens, credits)
 

@@ -68,7 +68,8 @@ export default function SecurityPage() {
     setTimeoutInitialized(true);
   }
 
-  const handleSetPassword = async () => {
+  const handleSetPassword = async (event?: React.FormEvent<HTMLFormElement>) => {
+    event?.preventDefault();
     if (!newPassword.trim()) {
       toast.error("Password cannot be empty");
       return;
@@ -231,14 +232,17 @@ export default function SecurityPage() {
               </div>
             </div>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent>
+            <form className="space-y-4" onSubmit={handleSetPassword}>
             <div className="space-y-2">
               <Label htmlFor="new-password">
                 {status?.hasPassword ? "New Password" : "Password"}
               </Label>
               <Input
                 id="new-password"
+                name="newPassword"
                 type="password"
+                autoComplete="new-password"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
                 placeholder="Enter password (min 4 characters)"
@@ -248,14 +252,16 @@ export default function SecurityPage() {
               <Label htmlFor="confirm-password">Confirm Password</Label>
               <Input
                 id="confirm-password"
+                name="confirmPassword"
                 type="password"
+                autoComplete="new-password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="Confirm password"
               />
             </div>
             <div className="flex gap-2">
-              <Button onClick={handleSetPassword} disabled={saving}>
+              <Button type="submit" disabled={saving}>
                 {saving ? (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 ) : (
@@ -291,6 +297,7 @@ export default function SecurityPage() {
                 </Dialog>
               )}
             </div>
+            </form>
           </CardContent>
         </Card>
       </motion.div>
@@ -319,6 +326,7 @@ export default function SecurityPage() {
                 <Label htmlFor="timeout">Session Timeout (hours)</Label>
                 <Input
                   id="timeout"
+                  name="sessionTimeoutHours"
                   type="number"
                   min="1"
                   max="720"

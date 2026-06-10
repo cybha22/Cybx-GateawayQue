@@ -432,6 +432,21 @@ func getSortedEndpoints(preferred string) []kiroEndpoint {
 	return result
 }
 
+func getTemporaryLimitFallbackEndpoint(current kiroEndpoint) (kiroEndpoint, bool) {
+	if !current.Runtime {
+		return kiroEndpoint{}, false
+	}
+	for _, ep := range kiroEndpoints {
+		if ep.Runtime {
+			continue
+		}
+		if strings.Contains(strings.ToLower(ep.URL), "codewhisperer.") {
+			return ep, true
+		}
+	}
+	return kiroEndpoint{}, false
+}
+
 func resolveKiroEndpointURL(ep kiroEndpoint, account *config.Account) string {
 	region := "us-east-1"
 	if account != nil && strings.TrimSpace(account.Region) != "" {
@@ -483,6 +498,16 @@ func CallKiroAPI(account *config.Account, payload *KiroPayload, callback *KiroSt
 			return nil
 		}
 		lastErr = err
+		if isKiroTemporaryLimitError(err) {
+			if fallbackEndpoint, ok := getTemporaryLimitFallbackEndpoint(ep); ok {
+				logger.Warnf("[KiroAPI] Endpoint %s temporarily limited, trying %s with the same account", ep.Name, fallbackEndpoint.Name)
+				fallbackErr := callKiroEndpoint(account, payload, callback, fallbackEndpoint)
+				if fallbackErr == nil {
+					return nil
+				}
+				return fallbackErr
+			}
+		}
 		if isKiroRateLimitError(err) {
 			return err
 		}
@@ -591,7 +616,11 @@ func applyKiroRequestHeaders(req *http.Request, account *config.Account, ep kiro
 	}
 
 	req.Header.Set("Content-Type", contentType)
-	req.Header.Set("Accept", "*/*")
+	if ep.Runtime {
+		req.Header.Set("Accept", "*/*")
+	} else {
+		req.Header.Set("Accept", "application/vnd.amazon.eventstream")
+	}
 	if ep.AmzTarget != "" {
 		req.Header.Set("X-Amz-Target", ep.AmzTarget)
 	}

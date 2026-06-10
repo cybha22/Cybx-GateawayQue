@@ -40,7 +40,7 @@ export function FilterUnconnectedSection() {
       try {
         const { apiFetch } = await import("@/lib/api");
         const labels = await apiFetch<{ provider: string; label: string }[]>("/api/connections/labels");
-        setAllLabels(labels);
+        setAllLabels(Array.isArray(labels) ? labels : []);
       } catch { }
     }
     loadLabels();
@@ -77,14 +77,16 @@ export function FilterUnconnectedSection() {
     fetch();
     // Refresh labels after batch completes
     import("@/lib/api").then(({ apiFetch }) =>
-      apiFetch<{ provider: string; label: string }[]>("/api/connections/labels").then(setAllLabels).catch(() => { }),
+      apiFetch<{ provider: string; label: string }[]>("/api/connections/labels")
+        .then((labels) => setAllLabels(Array.isArray(labels) ? labels : []))
+        .catch(() => { }),
     );
   }, [batchTask, fetch, taskId]);
 
   // Build set of connected emails per provider from all labels
   const connectedEmails = useMemo(() => {
     const map = new Map<string, Set<string>>();
-    for (const item of allLabels) {
+    for (const item of Array.isArray(allLabels) ? allLabels : []) {
       const p = item.provider || "codebuddy";
       if (!map.has(p)) map.set(p, new Set());
       map.get(p)!.add((item.label ?? "").toLowerCase());
@@ -151,7 +153,7 @@ export function FilterUnconnectedSection() {
         <CardContent className="space-y-4">
           {/* Provider selector */}
           <div className="flex items-center flex-wrap gap-3">
-            <Label className="text-xs text-muted-foreground shrink-0">Provider:</Label>
+            <Label id="filter-provider-label" className="text-xs text-muted-foreground shrink-0">Provider:</Label>
             <div className="flex gap-1.5">
               {(["codebuddy", "cline", "kiro", "qoder", "codex"] as string[]).map((p) => (
                 <Button
@@ -160,6 +162,8 @@ export function FilterUnconnectedSection() {
                   size="sm"
                   className="h-7 text-xs px-3"
                   onClick={() => setProvider(p)}
+                  aria-labelledby="filter-provider-label"
+                  aria-pressed={provider === p}
                 >
                   {p === "codebuddy" ? "Codebuddy" : p === "cline" ? "Cline" : p === "kiro" ? "Kiro" : p === "qoder" ? "Qoder" : "Codex"}
                   <Badge variant="secondary" className="ml-1.5 text-[9px] px-1 py-0">
@@ -172,6 +176,9 @@ export function FilterUnconnectedSection() {
 
           {/* Account list input */}
           <Textarea
+            id="filter-unconnected-accounts"
+            name="filterUnconnectedAccounts"
+            aria-label="Accounts to filter"
             className="font-mono text-xs max-h-[160px] overflow-y-auto resize-none"
             rows={5}
             placeholder={"email|password\nemail:password\nemail;password"}
@@ -220,8 +227,10 @@ export function FilterUnconnectedSection() {
           {/* Controls */}
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2">
-              <Label className="text-xs text-muted-foreground">Concurrency:</Label>
+              <Label htmlFor="filter-unconnected-concurrency" className="text-xs text-muted-foreground">Concurrency:</Label>
               <Input
+                id="filter-unconnected-concurrency"
+                name="filterUnconnectedConcurrency"
                 type="number"
                 min={1}
                 max={20}
@@ -233,12 +242,14 @@ export function FilterUnconnectedSection() {
             </div>
             <div className="flex items-center gap-2">
               <Switch
+                id="filter-unconnected-headless"
+                name="filterUnconnectedHeadless"
                 size="sm"
                 checked={headless}
                 onCheckedChange={setHeadless}
                 disabled={isRunning}
               />
-              <Label className="text-xs text-muted-foreground">Headless</Label>
+              <Label htmlFor="filter-unconnected-headless" className="text-xs text-muted-foreground">Headless</Label>
             </div>
             <div className="ml-auto flex gap-2">
               {isRunning ? (

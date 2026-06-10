@@ -114,6 +114,9 @@ export function BatchAddSection() {
         </CardHeader>
         <CardContent className="space-y-4">
           <Textarea
+            id="batch-accounts"
+            name="batchAccounts"
+            aria-label="Accounts to add"
             className="font-mono text-xs max-h-[160px] overflow-y-auto resize-none"
             rows={5}
             placeholder={"user1@example.com|password123\nuser2@example.com:secret"}
@@ -132,6 +135,9 @@ export function BatchAddSection() {
             ].map((p) => (
               <label key={p.id} className="flex items-center gap-2 text-sm cursor-pointer">
                 <Checkbox
+                  id={`batch-provider-${p.id}`}
+                  name="batchProviders"
+                  value={p.id}
                   checked={providers.includes(p.id)}
                   onCheckedChange={(checked) => {
                     if (checked) setProviders((prev) => [...prev, p.id]);
@@ -146,9 +152,10 @@ export function BatchAddSection() {
 
           <div className="flex flex-wrap items-end gap-4">
             <div className="space-y-1.5">
-              <Label htmlFor="concurrency">Concurrency</Label>
+              <Label htmlFor="batch-concurrency">Concurrency</Label>
               <Input
-                id="concurrency"
+                id="batch-concurrency"
+                name="batchConcurrency"
                 type="number"
                 min={1}
                 max={20}
@@ -161,12 +168,13 @@ export function BatchAddSection() {
 
             <div className="flex items-center gap-2">
               <Switch
-                id="headless"
+                id="batch-headless"
+                name="batchHeadless"
                 checked={headless}
                 onCheckedChange={setHeadless}
                 disabled={isRunning}
               />
-              <Label htmlFor="headless" className="text-sm">
+              <Label htmlFor="batch-headless" className="text-sm">
                 Headless
               </Label>
             </div>

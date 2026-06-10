@@ -499,6 +499,8 @@ func (h *Handler) handleConnectionAction(w http.ResponseWriter, id, action strin
 		account.Enabled = false
 	case "check":
 		valid := true
+		creditRefreshed := false
+		creditError := ""
 		if account.RefreshToken != "" {
 			if newAccess, newRefresh, newExpires, profileArn, err := auth.RefreshToken(account); err == nil {
 				account.AccessToken = newAccess
@@ -518,11 +520,25 @@ func (h *Handler) handleConnectionAction(w http.ResponseWriter, id, action strin
 		} else if account.AccessToken == "" {
 			valid = false
 		}
+		if valid {
+			h.clearAccountAuthBanOnSuccess(account)
+			if info, err := RefreshAccountInfo(account); err == nil {
+				if err := config.UpdateAccountInfo(account.ID, *info); err == nil {
+					creditRefreshed = true
+				} else {
+					creditError = err.Error()
+				}
+			} else {
+				creditError = err.Error()
+			}
+		}
 		writeJSON(w, http.StatusOK, map[string]interface{}{
-			"id":          account.ID,
-			"valid":       valid,
-			"status":      "ok",
-			"lastChecked": time.Now().UTC().Format(time.RFC3339),
+			"id":              account.ID,
+			"valid":           valid,
+			"creditRefreshed": creditRefreshed,
+			"creditError":     creditError,
+			"status":          "ok",
+			"lastChecked":     time.Now().UTC().Format(time.RFC3339),
 		})
 		return
 	default:
@@ -554,7 +570,7 @@ func (h *Handler) handleCybxAIConnectionLabels(w http.ResponseWriter, r *http.Re
 		}
 	}
 
-	var labels []map[string]interface{}
+	labels := make([]map[string]interface{}, 0, len(labelMap))
 	for label := range labelMap {
 		labels = append(labels, map[string]interface{}{
 			"provider": ProviderKiro,

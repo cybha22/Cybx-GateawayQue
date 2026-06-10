@@ -158,7 +158,14 @@ export const useConnectionsStore = create<ConnectionsState>()((set, get) => ({
       const result = await apiFetch<{ data: Connection[]; pagination: PaginationInfo }>(
         `/api/connections?${qs.toString()}`,
       );
-      set({ connections: result.data, pagination: result.pagination, loading: false });
+      const connections = Array.isArray(result?.data) ? result.data : [];
+      const pagination = result?.pagination ?? {
+        page: merged.page ?? 1,
+        limit: merged.limit ?? 20,
+        total: connections.length,
+        totalPages: connections.length > 0 ? 1 : 0,
+      };
+      set({ connections, pagination, loading: false });
     } catch (err) {
       set({
         error:
@@ -273,7 +280,7 @@ export const useConnectionsStore = create<ConnectionsState>()((set, get) => ({
 
   checkToken: async (id) => {
     try {
-      const result = await apiFetch<{ valid: boolean }>(
+      const result = await apiFetch<{ valid: boolean; creditRefreshed?: boolean; creditError?: string }>(
         `/api/connections/${id}/check`,
         { method: "POST" },
       );
@@ -298,7 +305,7 @@ export const useConnectionsStore = create<ConnectionsState>()((set, get) => ({
   bulkRefreshTokens: async (provider) => {
     const result = await apiFetch<BulkRefreshTokensResult>(
       "/api/connections/bulk-refresh-tokens",
-      { method: "POST", body: JSON.stringify({ provider }) },
+      { method: "POST", body: JSON.stringify({ provider }), timeoutMs: 300_000 },
     );
     await get().fetch();
     return result;
@@ -306,7 +313,7 @@ export const useConnectionsStore = create<ConnectionsState>()((set, get) => ({
 
   checkAllCredits: async () => {
     try {
-      await apiFetch("/api/connections/check-credits", { method: "POST" });
+      await apiFetch("/api/connections/check-credits", { method: "POST", timeoutMs: 300_000 });
       await get().fetch();
     } catch {}
   },

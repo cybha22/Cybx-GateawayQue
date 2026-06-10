@@ -1,6 +1,8 @@
 node_modules/
 .next/
 out/
+.codegraph/
+debugging/
 
 Backend/kiro-go
 Backend/*.exe

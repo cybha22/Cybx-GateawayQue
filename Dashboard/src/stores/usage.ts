@@ -97,7 +97,7 @@ export const useUsageStore = create<UsageState>()((set) => ({
       const records = await apiFetch<UsageRecord[]>(
         `/api/usage/records${qs}`,
       );
-      set({ records, recordsLoading: false });
+      set({ records: Array.isArray(records) ? records : [], recordsLoading: false });
     } catch (err) {
       set({
         recordsError:

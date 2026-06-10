@@ -120,7 +120,7 @@ export function AccountRow({ conn, onToggle, onCheck, onRemove, busy }: AccountR
             size="icon-xs"
             disabled={isBusy}
             onClick={() => onCheck(conn.id)}
-            title="Check Token"
+            title="Check token and refresh credit"
           >
             {isBusy ? (
               <Loader2 className="h-3.5 w-3.5 animate-spin" />

@@ -54,6 +54,14 @@ func isAuthErrorMessage(msg string) bool {
 		strings.Contains(msg, "invalid grant")
 }
 
+func isAuthBanReason(reason string) bool {
+	reason = strings.ToLower(strings.TrimSpace(reason))
+	return strings.Contains(reason, "authentication failed") ||
+		strings.Contains(reason, "token invalid") ||
+		strings.Contains(reason, "token expired") ||
+		strings.Contains(reason, "invalid or expired")
+}
+
 func (h *Handler) disableAccount(account *config.Account, banStatus, banReason string) {
 	if account == nil {
 		return
@@ -71,6 +79,33 @@ func (h *Handler) disableAccount(account *config.Account, banStatus, banReason s
 		return
 	}
 	logger.Warnf("[AccountFailover] Disabled %s: %s", account.Email, banReason)
+	h.pool.Reload()
+}
+
+func (h *Handler) clearAccountAuthBanOnSuccess(account *config.Account) {
+	if account == nil {
+		return
+	}
+	if account.BanStatus == "" || account.BanStatus == "ACTIVE" {
+		return
+	}
+	if !isAuthBanReason(account.BanReason) {
+		return
+	}
+	updatedAccount := *account
+	updatedAccount.Enabled = true
+	updatedAccount.BanStatus = "ACTIVE"
+	updatedAccount.BanReason = ""
+	updatedAccount.BanTime = 0
+	if err := config.UpdateAccount(account.ID, updatedAccount); err != nil {
+		logger.Warnf("[AccountFailover] Failed to clear auth ban for %s after success: %v", account.Email, err)
+		return
+	}
+	account.Enabled = true
+	account.BanStatus = "ACTIVE"
+	account.BanReason = ""
+	account.BanTime = 0
+	logger.Infof("[AccountFailover] Cleared stale auth ban for %s after successful chat validation", account.Email)
 	h.pool.Reload()
 }
 

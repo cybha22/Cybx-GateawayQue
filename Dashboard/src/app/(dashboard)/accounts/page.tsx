@@ -174,7 +174,7 @@ export default function AccountsPage() {
           .getState()
           .connections.find((c) => c.id === id);
         if (conn?.tokenValid) {
-          toast.success("Token is valid");
+          toast.success("Token and credit refreshed");
         } else {
           toast.error("Token is invalid");
         }

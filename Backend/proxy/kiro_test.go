@@ -121,6 +121,10 @@ func TestApplyKiroRequestHeadersUsesRuntimeGatewayHeaders(t *testing.T) {
 }
 
 func TestCallKiroEndpointDoesNotFanoutOrRetrySuspicious429(t *testing.T) {
+	if err := config.Init(filepath.Join(t.TempDir(), "config.json")); err != nil {
+		t.Fatalf("config init failed: %v", err)
+	}
+
 	count := 0
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		count++
@@ -144,6 +148,75 @@ func TestCallKiroEndpointDoesNotFanoutOrRetrySuspicious429(t *testing.T) {
 	}
 	if !isKiroTemporaryLimitError(err) {
 		t.Fatalf("expected temporary limit error, got %v", err)
+	}
+}
+
+func TestCallKiroAPIFallsBackFromRuntimeTemporaryLimitToCodeWhisperer(t *testing.T) {
+	if err := config.Init(filepath.Join(t.TempDir(), "config.json")); err != nil {
+		t.Fatalf("config init failed: %v", err)
+	}
+
+	runtimeCalls := 0
+	runtimeServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		runtimeCalls++
+		w.WriteHeader(http.StatusTooManyRequests)
+		w.Write([]byte(`{"message":"Due to suspicious activity, we are imposing temporary limits on how frequently your account can send a request to Kiro while we investigate.","reason":"USER_REQUEST_RATE_EXCEEDED"}`))
+	}))
+	defer runtimeServer.Close()
+
+	codeWhispererCalls := 0
+	var codeWhispererAuthorization string
+	var codeWhispererAccept string
+	var codeWhispererTarget string
+	codeWhispererServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		codeWhispererCalls++
+		codeWhispererAuthorization = r.Header.Get("Authorization")
+		codeWhispererAccept = r.Header.Get("Accept")
+		codeWhispererTarget = r.Header.Get("X-Amz-Target")
+		w.WriteHeader(http.StatusOK)
+	}))
+	defer codeWhispererServer.Close()
+
+	oldEndpoints := kiroEndpoints
+	kiroEndpoints = []kiroEndpoint{
+		{
+			URL:       runtimeServer.URL,
+			Origin:    "AI_EDITOR",
+			AmzTarget: "AmazonCodeWhispererStreamingService.GenerateAssistantResponse",
+			Name:      "Kiro Runtime",
+			Runtime:   true,
+		},
+		{
+			URL:       codeWhispererServer.URL + "/codewhisperer.us-east-1.amazonaws.com/generateAssistantResponse",
+			Origin:    "AI_EDITOR",
+			AmzTarget: "AmazonCodeWhispererStreamingService.GenerateAssistantResponse",
+			Name:      "CodeWhisperer",
+		},
+	}
+	t.Cleanup(func() { kiroEndpoints = oldEndpoints })
+
+	payload := minimalKiroPayload()
+	payload.ProfileArn = "arn:test"
+	err := CallKiroAPI(&config.Account{AccessToken: "same-account-token"}, payload, &KiroStreamCallback{
+		OnComplete: func(int, int) {},
+	})
+	if err != nil {
+		t.Fatalf("expected CodeWhisperer fallback success, got %v", err)
+	}
+	if runtimeCalls != 1 {
+		t.Fatalf("expected one Runtime call, got %d", runtimeCalls)
+	}
+	if codeWhispererCalls != 1 {
+		t.Fatalf("expected one CodeWhisperer call, got %d", codeWhispererCalls)
+	}
+	if codeWhispererAuthorization != "Bearer same-account-token" {
+		t.Fatalf("expected same account token, got %q", codeWhispererAuthorization)
+	}
+	if codeWhispererAccept != "application/vnd.amazon.eventstream" {
+		t.Fatalf("expected event stream accept header, got %q", codeWhispererAccept)
+	}
+	if codeWhispererTarget != "AmazonCodeWhispererStreamingService.GenerateAssistantResponse" {
+		t.Fatalf("expected CodeWhisperer target, got %q", codeWhispererTarget)
 	}
 }
 

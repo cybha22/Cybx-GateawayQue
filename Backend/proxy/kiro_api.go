@@ -219,17 +219,7 @@ func RefreshAccountInfo(account *config.Account) (*config.AccountInfo, error) {
 			return nil, fmt.Errorf("Account suspended: %w", err)
 		} else if strings.Contains(errMsg, "403") || strings.Contains(errMsg, "401") ||
 			strings.Contains(errMsg, "invalid") || strings.Contains(errMsg, "expired") {
-			logger.Warnf("[RefreshAccountInfo] Authentication error for %s: %v", account.Email, err)
-
-			updatedAccount := *account
-			updatedAccount.Enabled = false
-			updatedAccount.BanStatus = "BANNED"
-			updatedAccount.BanReason = "Authentication failed - token invalid or expired"
-			updatedAccount.BanTime = time.Now().Unix()
-
-			if updateErr := config.UpdateAccount(account.ID, updatedAccount); updateErr != nil {
-				logger.Errorf("[RefreshAccountInfo] Failed to update account ban status: %v", updateErr)
-			}
+			logger.Warnf("[RefreshAccountInfo] Usage refresh auth-like error for %s, leaving account enabled until chat/token validation confirms failure: %v", account.Email, err)
 		}
 
 		return nil, fmt.Errorf("GetUsageLimits: %w", err)

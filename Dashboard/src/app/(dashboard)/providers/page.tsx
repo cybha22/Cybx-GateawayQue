@@ -65,7 +65,7 @@ export default function ProvidersPage() {
     apiFetch<{ provider: string; label: string }[]>("/api/connections/labels")
       .then((labels) => {
         const map: Record<string, number> = {};
-        for (const l of labels) {
+        for (const l of Array.isArray(labels) ? labels : []) {
           map[l.provider] = (map[l.provider] || 0) + 1;
         }
         setCounts(map);
